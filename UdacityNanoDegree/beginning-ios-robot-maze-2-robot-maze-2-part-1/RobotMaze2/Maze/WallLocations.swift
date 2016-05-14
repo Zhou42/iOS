@@ -24,12 +24,31 @@ extension ControlCenter {
         //            }
         //
         //        }
+        switch(direction) {
+            case .Up:
+                if cell.top {
+                    isWall = true
+                }
+            case .Left:
+                if cell.left {
+                    isWall = true
+                }
+            case .Right:
+                if cell.right {
+                    isWall = true
+                }
+            case .Down:
+                if cell.bottom {
+                    isWall = true
+                }
+        }
+        
         
         // Step 1.1b
         // TODO: Return a Bool that represents whether the robot is currently facing a wall. You will need to change the placeholder return statement below.
         
         
         // Placeholder
-        return false
+        return isWall
     }
 }
