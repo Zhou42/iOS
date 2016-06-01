@@ -41,7 +41,7 @@ struct Joker: PlayingCard {
 }
 
 //: ### A SuitedCard is-a PlayingCard
-struct SuitedCard: PlayingCard {
+struct SuitedCard: PlayingCard, Comparable {
     
     enum Suit {
         case Hearts
@@ -129,6 +129,95 @@ struct SuitedCard: PlayingCard {
     }
 }
 
+// compare re-definition
+
+func ==(l: SuitedCard, r: SuitedCard) -> Bool {
+    switch l.value {
+    case .Ten, .Jack, .Queen, .King:
+        switch r.value {
+        case .Ten, .Jack, .Queen, .King:
+            return true
+        default:
+            return false
+        }
+    default:
+        return l.value == r.value
+    }
+}
+
+func <(l: SuitedCard, r: SuitedCard) -> Bool {
+    var lhsValue = 0
+    var rhsValue = 0
+    
+    switch l.value {
+    case .Two:
+        lhsValue = 2
+    case .Three:
+        lhsValue = 3
+    case .Four:
+        lhsValue = 4
+    case .Five:
+        lhsValue = 5
+    case .Six:
+        lhsValue = 6
+    case .Seven:
+        lhsValue = 7
+    case .Eight:
+        lhsValue = 8
+    case .Nine:
+        lhsValue = 9
+    case .Ten:
+        lhsValue = 10
+    case .Jack:
+        lhsValue = 10
+    case .Queen:
+        lhsValue = 10
+    case .King:
+        lhsValue = 10
+    case .Ace:
+        lhsValue = 11
+    }
+    
+    switch r.value {
+    case .Two:
+        rhsValue = 2
+    case .Three:
+        rhsValue = 3
+    case .Four:
+        rhsValue = 4
+    case .Five:
+        rhsValue = 5
+    case .Six:
+        rhsValue = 6
+    case .Seven:
+        rhsValue = 7
+    case .Eight:
+        rhsValue = 8
+    case .Nine:
+        rhsValue = 9
+    case .Ten:
+        rhsValue = 10
+    case .Jack:
+        rhsValue = 10
+    case .Queen:
+        rhsValue = 10
+    case .King:
+        rhsValue = 10
+    case .Ace:
+        rhsValue = 11
+    }
+    
+    return lhsValue < rhsValue
+}
+
+
+
+var myCard_1: SuitedCard = SuitedCard(suit: .Hearts, value: .King, isFaceDown: true)
+var myCard_2: SuitedCard = SuitedCard(suit: .Spades, value: .Ten, isFaceDown: true)
+
+myCard_1 > myCard_2
+
+
 let suits:[SuitedCard.Suit] = [.Hearts, .Diamonds, .Clubs, .Spades]
 let values:[SuitedCard.Value] = [.Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Ten, .Jack, .Queen, .King, .Ace]
 
@@ -150,6 +239,24 @@ struct Deck {
     
     func shuffle() {
         // TODO: implement shuffle
+        
+    }
+    
+    mutating func dealHand() -> (PlayingCard, PlayingCard) {
+        if var card = cards.popLast(),
+            var faceUp = cards.popLast() {
+            card.isFaceDown = true
+            faceUp.isFaceDown = false
+            return (card, faceUp)
+        }
+        fatalError("out of cards")
     }
 }
+
+var myDeck = Deck()
+myDeck.cards
+myDeck.dealHand()
+myDeck.dealHand()
+
+
 
